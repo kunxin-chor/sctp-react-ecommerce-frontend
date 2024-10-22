@@ -1,8 +1,14 @@
-# React + Vite
+Differences from branch 02 with this branch:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- **Import Statements**:
+  - Added `useState` to the React import.
 
-Currently, two official plugins are available:
+- **New State and Function**:
+  - Introduced a new state variable `isNavbarShowing` using `useState(false)`.
+  - Added a `toggleNavbar` function to toggle the state of `isNavbarShowing`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Navbar Functionality**:
+  - Added `onClick` event on the navbar toggler button to call `toggleNavbar`.
+  - Modified the `className` of the `div` with `id="navbarNav"` to conditionally include `"show"` based on the state `isNavbarShowing`.
+
+These changes add functionality for toggling the visibility of the navbar.
