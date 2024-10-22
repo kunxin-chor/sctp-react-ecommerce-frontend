@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ProductCard from './ProductCard';
 
+
+
 function App() {
+
+  const [isNavbarShowing, setNavbarShowing] = useState(false);
+
+    // Toggle the collapse state
+    const toggleNavbar = () => {
+      setNavbarShowing(!isNavbarShowing);
+    };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -10,10 +20,11 @@ function App() {
           <button
             className="navbar-toggler"
             type="button"
+             onClick={toggleNavbar}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div className={`collapse navbar-collapse ${isNavbarShowing ? "show" : ""}`} id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">Home</a>
