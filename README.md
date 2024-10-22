@@ -2,15 +2,41 @@
 
 ## App.jsx
 
-- **Import Statements**:
-  - Added `useState` to the React import.
+### Lines Changed:
 
-- **New State and Function**:
-  - Introduced a new state variable `isNavbarShowing` using `useState(false)`.
-  - Added a `toggleNavbar` function to toggle the state of `isNavbarShowing`.
+1. **Line 1**:
+   ```diff
+   - import React from 'react';
+   + import React, {useState} from 'react';
+   ```
+   - **Explanation**: Added `useState` to the React import to manage state within the component.
 
-- **Navbar Functionality**:
-  - Added `onClick` event on the navbar toggler button to call `toggleNavbar`.
-  - Modified the `className` of the `div` with `id="navbarNav"` to conditionally include `"show"` based on the state `isNavbarShowing`.
+2. **Line 5**:
+   ```diff
+   + const [isNavbarShowing, setNavbarShowing] = useState(false);
+   ```
+   - **Explanation**: Introduced a new state variable `isNavbarShowing` to control the visibility of the navbar.
 
-These changes add functionality for toggling the visibility of the navbar.
+3. **Line 7-10**:
+   ```diff
+   + // Toggle the collapse state
+   + const toggleNavbar = () => {
+   +   setNavbarShowing(!isNavbarShowing);
+   + };
+   ```
+   - **Explanation**: Added a `toggleNavbar` function to toggle the state of `isNavbarShowing`.
+
+4. **Line 20**:
+   ```diff
+   + onClick={toggleNavbar}
+   ```
+   - **Explanation**: Added an `onClick` event to the navbar toggler button to call the `toggleNavbar` function.
+
+5. **Line 23**:
+   ```diff
+   - <div className="collapse navbar-collapse" id="navbarNav">
+   + <div className={`collapse navbar-collapse ${isNavbarShowing ? "show" : ""}`} id="navbarNav">
+   ```
+   - **Explanation**: Modified the `className` of the `div` with `id="navbarNav"` to conditionally include `"show"` based on the state `isNavbarShowing`.
+
+These changes add functionality for toggling the visibility of the navbar based on the state managed by `useState`.
