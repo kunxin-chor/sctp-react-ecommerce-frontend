@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 
 
@@ -7,10 +7,25 @@ function App() {
 
   const [isNavbarShowing, setNavbarShowing] = useState(false);
 
-    // Toggle the collapse state
-    const toggleNavbar = () => {
-      setNavbarShowing(!isNavbarShowing);
+  // Sync the collapse state with screen size
+  useEffect(() => {
+    const syncNavbarState = () => {
+      setNavbarShowing(window.innerWidth >= 992); // Show if larger than 992px, otherwise don't show
     };
+
+    syncNavbarState(); // Run on mount to set the initial state
+
+    // Listen for window resize events
+    window.addEventListener('resize', syncNavbarState);
+
+    // Cleanup the listener on unmount
+    return () => window.removeEventListener('resize', syncNavbarState);
+  }, []);
+
+  // Toggle the collapse state
+  const toggleNavbar = () => {
+    setNavbarShowing(!isNavbarShowing);
+  };
 
   return (
     <>
@@ -20,7 +35,7 @@ function App() {
           <button
             className="navbar-toggler"
             type="button"
-             onClick={toggleNavbar}
+            onClick={toggleNavbar}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -59,7 +74,7 @@ function App() {
             <ProductCard
               imageUrl="https://picsum.photos/id/20/300/200"
               productName="Product 1"
-              price="19.99"            
+              price="19.99"
             />
           </div>
 
@@ -67,7 +82,7 @@ function App() {
             <ProductCard
               imageUrl="https://picsum.photos/id/1/300/200"
               productName="Product 2"
-              price="29.99"              
+              price="29.99"
             />
           </div>
 
@@ -75,7 +90,7 @@ function App() {
             <ProductCard
               imageUrl="https://picsum.photos/id/26/300/200"
               productName="Product 3"
-              price="39.99"              
+              price="39.99"
             />
           </div>
 
@@ -83,7 +98,7 @@ function App() {
             <ProductCard
               imageUrl="https://picsum.photos/id/96/300/200"
               productName="Product 4"
-              price="49.99"              
+              price="49.99"
             />
           </div>
         </div>
