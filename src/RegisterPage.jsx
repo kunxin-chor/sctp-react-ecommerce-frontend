@@ -1,7 +1,13 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
+import { useLocation } from 'wouter';
 
 function RegisterPage() {
+
+  const [, setLocation] = useLocation();
+
   const initialValues = {
     name: '',
     email: '',
@@ -12,10 +18,39 @@ function RegisterPage() {
     country: ''
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    // Here you would typically make an API call to register the user
-    console.log('Form values:', values);
-    setSubmitting(false);
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required('Name is required'),
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(8, 'Password must be at least 8 characters'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
+    salutation: Yup.string()
+      .required('Salutation is required'),
+    country: Yup.string()
+      .required('Country is required')
+  });
+
+  const handleSubmit = async (values, formikHelpers) => {
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
+      console.log('Registration successful:', response.data);
+
+
+    } catch (error) {
+      console.error('Registration failed:', error.response?.data || error.message);
+ 
+      // Handle registration error (e.g., show error message)
+    } finally {
+      formikHelpers.setSubmitting(false);
+      // redirect to the home page after registration using wouter, and pass the message
+     setLocation('/');
+    }
   };
 
   return (
@@ -24,6 +59,7 @@ function RegisterPage() {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
+        validationSchema={validationSchema}
       >
         {(formik) => (
           <Form>
@@ -35,6 +71,8 @@ function RegisterPage() {
                 id="name"
                 name="name"
               />
+              {/* Show validation error for name, if any */}
+              {formik.touched.name && formik.errors.name ? <div className="text-danger">{formik.errors.name}</div> : null}
             </div>
 
             <div className="mb-3">
@@ -45,6 +83,8 @@ function RegisterPage() {
                 id="email"
                 name="email"
               />
+              {/* Show validation error for email, if any */}
+              {formik.touched.email && formik.errors.email ? <div className="text-danger">{formik.errors.email}</div> : null}
             </div>
 
             <div className="mb-3">
@@ -55,6 +95,8 @@ function RegisterPage() {
                 id="password"
                 name="password"
               />
+              {/* Show validation error for password, if any */}
+              {formik.touched.password && formik.errors.password ? <div className="text-danger">{formik.errors.password}</div> : null}
             </div>
 
             <div className="mb-3">
@@ -65,6 +107,8 @@ function RegisterPage() {
                 id="confirmPassword"
                 name="confirmPassword"
               />
+              {/* Show validation error for confirmPassword, if any */}
+              {formik.touched.confirmPassword && formik.errors.confirmPassword ? <div className="text-danger">{formik.errors.confirmPassword}</div> : null}
             </div>
 
             <div className="mb-3">
@@ -101,6 +145,8 @@ function RegisterPage() {
                   <label className="form-check-label" htmlFor="mrs">Mrs</label>
                 </div>
               </div>
+              {/* Show validation error for salutation, if any */}
+              {formik.touched.salutation && formik.errors.salutation ? <div className="text-danger">{formik.errors.salutation}</div> : null}
             </div>
 
             <div className="mb-3">
@@ -131,6 +177,8 @@ function RegisterPage() {
                   </label>
                 </div>
               </div>
+              {/* Show validation error for marketing preferences, if any */}
+              {formik.touched.marketingPreferences && formik.errors.marketingPreferences ? <div className="text-danger">{formik.errors.marketingPreferences}</div> : null}
             </div>
 
             <div className="mb-3">
@@ -147,6 +195,8 @@ function RegisterPage() {
                 <option value="in">Indonesia</option>
                 <option value="th">Thailand</option>
               </Field>
+              {/* Show validation error for country, if any */}
+              {formik.touched.country && formik.errors.country ? <div className="text-danger">{formik.errors.country}</div> : null}
             </div>
 
             <button

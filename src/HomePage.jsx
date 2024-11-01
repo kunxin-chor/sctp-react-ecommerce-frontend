@@ -2,6 +2,9 @@ import React from 'react';
 import ProductCard from './ProductCard';
 
 function HomePage() {
+
+
+
     return (
         <>
             <header className="bg-primary text-white text-center py-5">
