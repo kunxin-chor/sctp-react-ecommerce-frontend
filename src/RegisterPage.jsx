@@ -3,10 +3,12 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useLocation } from 'wouter';
+import { useFlashMessage } from './FlashMessageStore';
 
 function RegisterPage() {
 
   const [, setLocation] = useLocation();
+  const {showMessage} = useFlashMessage();
 
   const initialValues = {
     name: '',
@@ -40,12 +42,12 @@ function RegisterPage() {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
       console.log('Registration successful:', response.data);
-
-
+      // show success message
+      showMessage('Registration successful!', 'success');
     } catch (error) {
       console.error('Registration failed:', error.response?.data || error.message);
- 
-      // Handle registration error (e.g., show error message)
+      // show error message
+      showMessage(error.response?.data || error.message, 'danger');
     } finally {
       formikHelpers.setSubmitting(false);
       // redirect to the home page after registration using wouter, and pass the message
