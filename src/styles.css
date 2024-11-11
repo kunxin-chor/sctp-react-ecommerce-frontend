@@ -1,5 +1,5 @@
 .flash-alert {
-    animation: fadeOut 3s ease forwards;
+    animation: fadeOut 4s ease forwards;
   }
   
   @keyframes fadeOut {
