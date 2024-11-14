@@ -40,14 +40,14 @@ function RegisterPage() {
 
   const handleSubmit = async (values, formikHelpers) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, values);
       console.log('Registration successful:', response.data);
       // show success message
       showMessage('Registration successful!', 'success');
     } catch (error) {
       console.error('Registration failed:', error.response?.data || error.message);
       // show error message
-      showMessage(error.response?.data || error.message, 'danger');
+      showMessage("Registration failed: " + error, 'danger');
     } finally {
       formikHelpers.setSubmitting(false);
       // redirect to the home page after registration using wouter, and pass the message
